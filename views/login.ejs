@@ -5,10 +5,15 @@
     <title>Login Form</title>
 </head>
 <body>
-    <h1>Login Form .</h1>
-    <form action="/user/login" method="post">
-        <%- include("./partials/form") %>
-    </form>
-    <%- include("./partials/foot") %>
+    <%- include("./partials/nav") %>
+    <div class="bg-white p-5 mt-5 rounded shadow-lg w-100">
+        <h1 class="text-center mb-4">Login Form</h1>
+        <%- include("./partials/alert") %>
+        <form action="/user/login" method="post">
+            <%- include("./partials/form") %>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        <%- include("./partials/foot") %>
+    </div> 
 </body>
 </html>

@@ -2,10 +2,15 @@ const {sign,verify}=require("jsonwebtoken");
 const {randomBytes}=require("crypto");
 const SECRET=randomBytes(16).toString("hex");
 
-async function jwtSign(name,email){
+function jwtSign(user){
     try{
-        const payload={name,email};
-        const token =await sign(payload,SECRET);
+        const payload={
+            _id: user._id,
+            email: user.email,
+            role : user.role,
+            profileImageUrl : user.profileImageUrl
+        };
+        const token = sign(payload, SECRET);
         console.log(`the token created is : ${token}`);
         return token;
     }catch(error){
@@ -13,9 +18,9 @@ async function jwtSign(name,email){
     }
 }
 
-async function jwtVerify(token){
+function jwtVerify(token){
     try{
-        const payload =await verify(token,SECRET);
+        const payload =verify(token, SECRET);
         console.log(`the token verified is : ${payload}`);
         return payload;
     }catch(error){

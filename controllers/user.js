@@ -11,34 +11,37 @@ function registerGet(req,res){
 
 async function loginPost(req,res){
     //do login + insert cookie for authorization
-    const {email,password}=req.body;
-    if(!email || !password)throw new Error("all fields are required");
     try{
+        const {email,password}=req.body;
+        if(!email || !password)return res.render("login",{error:"all fields are required"});
         const user= await USER.findOne({email});
-        if(!user)throw new Error("either email or password is incorect");
+        if(!user)return res.render("login",{error:"either email or password is incorect"});
         const storedPassword= user.password;
         const salt=user.salt;
         const hashedPassword= createHmac("sha256",salt).update(password).digest("hex");
-        if(storedPassword !== hashedPassword)throw new Error("either email or password is incorect");
+        if(storedPassword !== hashedPassword)return res.render("login",{error:"either email or password is incorect"});
         //if we reach at this point that means email and password is correct now login user.
-        const name=user.fullName;
-        const token= await jwtSign(name,email);//token is created.
-        res.cookie("uid",token).render("home");
+        const token= jwtSign(user);//token is created.
+        if(!token)return res.render("login",{error:"error while generating token"});
+        
+        res.cookie("token",token,{maxAge: 30*24*60*60*1000}).status(200).render("home",{message:`user ${user.fullName} has successfully Logined`});
     }catch(error){
         console.log(`ERROR WHILE LOGGINING THE USER : ${error}`);
+        res.status(500).render("login",{error:"some internal server error"});
     }
 }
 
 async function registerPost(req,res){
-    const {fullName,email,password} =req.body;
-    // if(!fullName || !email || !password)throw new Error("all fields are required .");
-    try{    
+    try{  
+        const {fullName,email,password} =req.body;
+        if(!fullName || !email || !password)return res.render("register",{error:"all fields are required"});  
         await USER.create({fullName,email,password});
         console.log(`USER CREATED SUCCESSFULLY : ${fullName}`);
-        const token= await jwtSign(fullName,email);//token is created.
-        res.cookie("uid",token).render("home");
+        const token= jwtSign(fullName, email);//token is created.
+        res.cookie("token",token,{maxAge: 30*24*60*60*1000}).status(201).render("home",{message:`user ${fullName} has successfully Registered`});
     }catch(error){
         console.log(`ERROR WHILE REGISTERING THE USER : ${error}`);
+        res.status(500).render("register",{error:"some internal server error"});
     }
 }
 

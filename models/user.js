@@ -23,7 +23,7 @@ const userSchema=Schema({
         enum:["admin","normal"],
         default:"normal"
     },
-    profileImage:{
+    profileImageUrl:{
         type:String,
         default:"./public/images/default.jpeg",
     }

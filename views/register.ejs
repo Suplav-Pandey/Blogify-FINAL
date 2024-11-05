@@ -5,14 +5,18 @@
     <title>Registration Form</title>
 </head>
 <body>
-    <h1>Registration Form .</h1>
-    <form action="/user/register" method="post">
-        <div class="mb-4">
-            <label for="fullName" class="form-label">Name</label>
-            <input type="text" class="form-control" name="fullName" id="fullName">
-        </div>
-        <%- include("./partials/form") %>
-    </form>
+    <%- include("./partials/nav") %>
+    <div class="bg-white p-5 mt-5 rounded shadow-lg w-100">
+        <h1 class="text-center mb-4">Registration Form</h1>
+        <%- include("./partials/alert") %>
+        <form action="/user/register" method="post">
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Name</label>
+                <input type="text" class="form-control" name="fullName" id="fullName">
+            </div>
+            <%- include("./partials/form") %>
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
     <%- include("./partials/foot") %>
 </body>
 </html>
