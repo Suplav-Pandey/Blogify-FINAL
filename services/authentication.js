@@ -1,11 +1,12 @@
 const {sign,verify}=require("jsonwebtoken");
 const {randomBytes}=require("crypto");
-const SECRET=randomBytes(16).toString("hex");
+const SECRET="suplavIsA-GoodEngineer";
 
 function jwtSign(user){
     try{
         const payload={
             _id: user._id,
+            name : user.fullName,
             email: user.email,
             role : user.role,
             profileImageUrl : user.profileImageUrl
@@ -19,13 +20,7 @@ function jwtSign(user){
 }
 
 function jwtVerify(token){
-    try{
-        const payload =verify(token, SECRET);
-        console.log(`the token verified is : ${payload}`);
-        return payload;
-    }catch(error){
-        console.log(`error while verifying jwt token : ${error}`);
-    }
+    return verify(token, SECRET);
 }
 
 module.exports={jwtSign,jwtVerify};
