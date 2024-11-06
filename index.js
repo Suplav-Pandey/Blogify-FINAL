@@ -1,9 +1,11 @@
 const express=require("express");
-const connectMongoDb = require("./connection");
 const {resolve}=require("path");
-const userRoute = require("./routes/user");
-const checkAuthentication = require("./middleware/authentication");
 const cookieParser = require('cookie-parser');
+const connectMongoDb = require("./connection");
+const checkAuthentication = require("./middleware/authentication");
+const homeRoute = require("./routes/home");
+const userRoute = require("./routes/user");
+const blogRoute = require("./routes/blog");
 
 const app=express();
 const PORT=3000;
@@ -15,15 +17,18 @@ app.set("views",resolve("./views"));
 app.use(express.urlencoded({extended :false}));
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static(`./public/`));
+
+//custom middleware
 app.use(checkAuthentication("token"));
 
+//my custom routes
 app.use("/user",userRoute);
-app.get("/",(req,res)=>{
-    res.render("home",{user:req.user});
-});
-app.get("/logout",(req,res)=>{res.clearCookie("token").redirect("/")});
+app.use("/blog",blogRoute);
+app.get("/",homeRoute);
 
 app.listen(PORT,()=>console.log(`server started at port : ${PORT}`));
 
 
 //user login and registration and many related is done .
+//user authentication all functionalities are done .now only blog functionalities are left.

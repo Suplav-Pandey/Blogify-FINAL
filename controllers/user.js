@@ -9,6 +9,10 @@ function registerGet(req,res){
     res.render("register");
 }
 
+function logout(req,res){
+    res.clearCookie("token").redirect("/");
+}
+
 async function loginPost(req,res){
     //do login + insert cookie for authorization
     try{
@@ -45,4 +49,4 @@ async function registerPost(req,res){
     }
 }
 
-module.exports={loginGet,registerGet,loginPost,registerPost};
+module.exports={loginGet,registerGet,loginPost,registerPost,logout};

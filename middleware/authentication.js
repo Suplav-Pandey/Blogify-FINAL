@@ -7,7 +7,6 @@ function checkAuthentication(authToken) {
         try {
             const payload = jwtVerify(cookieToken); // Use cookieToken here
             const user = JSON.stringify(payload);
-            console.log(`The token verified: ${user}`);
             req.user=user;
         } catch (error) {
             console.error(error); // Optional: log the error
