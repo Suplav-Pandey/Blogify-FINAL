@@ -7,5 +7,6 @@ userRoute.get("/register",registerGet);
 userRoute.post("/login",loginPost);
 userRoute.post("/register",registerPost);
 userRoute.get("/logout",logout);
+//show profile of user on / route
 
 module.exports=userRoute;

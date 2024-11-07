@@ -2,26 +2,150 @@
 <html lang="en">
 <head>
     <%- include("./partials/head") %>
-    <title>Add Blog</title>
+    <title>Render Blog</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #343a40;
+            color: white;
+            padding: 15px; /* Reduced padding to bring title closer */
+            text-align: center;
+        }
+        .card-header h1 {
+            font-size: 32px;
+            margin: 0;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-text {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #4b4b4b;
+        }
+        .blog-image {
+            width: 90%;
+            max-height: 500px; /* Increased max height */
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 0 auto;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .comments-section {
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .comments-section h2 {
+            font-size: 24px;
+            color: #343a40;
+            margin-bottom: 15px;
+        }
+        .comment-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .comment-form input[type="text"] {
+            flex: 1;
+            padding: 8px;
+        }
+        .comment-form button {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        .comment {
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .comment p {
+            margin: 0;
+        }
+        .comment small {
+            color: #6c757d;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
     <%- include("./partials/nav") %>
     <%- include("./partials/alert") %>
-    <form action="/blog/AddNew" method="post" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title"  name="title" placeholder="Enter your title here">
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h1 style="margin-top: -10px;"><%= blog.title %></h1> <!-- Shift title slightly up -->
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <img src="<%= blog.coverImageUrl %>" class="img-fluid mb-4 blog-image" alt="Cover Image">
+                </div>
+                <div class="card-text"><%- blog.body %></div>
+            </div>
         </div>
-        <div class="mb-3"></div>
-            <label for="file" class="form-label">Cover-Image</label>
-            <input type="file" class="form-control" id="file" name="file">
+
+        <!-- Comments Section -->
+        <h2>Comments (<%= comments.length %>)</h2>
+          <form action="/blog/comment/<%= blog._id %>" method="post" class="comment-form">
+            <input type="text" class="form-control" name="content" id="content" placeholder="Write a comment...">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        <div class="container mt-4">
+          <% if (blog.createdBy && blog.createdBy.profileImageUrl) { %>
+            <img src="<%= blog.createdBy.profileImageUrl %>" width="50px" />
+          <% } else { %>
+            <img src="/images/default.jpeg" width="50px" />
+          <% } %>
+          <% if (blog.createdBy && blog.createdBy.fullName) { %>
+            <%= blog.createdBy.fullName %>
+          <% } else { %>
+            Unknown Author
+          <% } %>
         </div>
-        <div class="mb-3">
-            <label for="body" class="form-label">Body</label>
-            <textarea class="form-control" id="body" name="body" rows="3" placeholder="body of blog"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    <%- include("./partials/foot") %>   
+        
+        <% if (comments.length > 0) { %>
+          <% comments.forEach(comment => { %>
+            <div class="comment">
+              <% if (comment.createdBy && comment.createdBy.profileImageUrl) { %>
+                <img src="<%= comment.createdBy.profileImageUrl %>" width="50px" />
+              <% } else { %>
+                <img src="/images/default.jpeg" width="50px" />
+              <% } %>
+              <% if (comment.createdBy && comment.createdBy.fullName) { %>
+                <%= comment.createdBy.fullName %>
+              <% } else { %>
+                Unknown Commenter
+              <% } %>
+              <div class="comment-content">
+                <p><%= comment.content %></p>
+                <p class="comment-date"><%= comment.createdAt.toLocaleString() %></p>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>No comments yet.</p>
+        <% } %>
+    </div>
+    <%- include("./partials/foot") %>
 </body>
 </html>

@@ -28,7 +28,3 @@ app.use("/blog",blogRoute);
 app.get("/",homeRoute);
 
 app.listen(PORT,()=>console.log(`server started at port : ${PORT}`));
-
-
-//user login and registration and many related is done .
-//user authentication all functionalities are done .now only blog functionalities are left.

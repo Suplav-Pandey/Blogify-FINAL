@@ -11,7 +11,7 @@ const blogSchema=Schema({
     },
     coverImageUrl:{
         type:String,
-        default:"/public/images/default_coverImage.jpeg"
+        default:"/images/default_coverImage.jpg"
     },
     createdBy:{
         type:Schema.Types.ObjectId,

@@ -23,11 +23,11 @@ const userSchema=Schema({
         enum:["admin","normal"],
         default:"normal"
     },
-    profileImageUrl:{
-        type:String,
-        default:"./public/images/default.jpeg",
+    profileImageUrl: {
+        type: String,
+        default: "/images/default.jpeg",
     }
-});
+},{timestamps:true});
 
 userSchema.pre('save',function(next){
     const user=this;

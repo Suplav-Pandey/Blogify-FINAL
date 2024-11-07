@@ -3,22 +3,81 @@
 <head>
     <%- include("./partials/head") %>
     <title>Blogify</title>
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light background to match the navbar */
+            color: #343a40; /* Dark text for contrast */
+        }
+        .card {
+            background-color: #ffffff; /* Clean white card background */
+            border: 1px solid #ddd; /* Subtle card border */
+            margin-bottom: 20px; /* Space between cards */
+        }
+        .card-header {
+            background-color: #343a40; /* Dark card header to match navbar */
+            color: white; /* White text for contrast */
+        }
+        .card-body {
+            background-color: #ffffff; /* White body for clarity */
+            max-height: 250px; /* Fixed height */
+            overflow-y: auto;  /* Scrollable content */
+        }
+        .card-title {
+            white-space: nowrap; /* Prevent line breaks */
+            overflow: hidden;    /* Hide excess content */
+            text-overflow: ellipsis; /* Show ellipsis for overflow */
+            max-width: 100%; /* Ensure title stays within the card width */
+        }
+        .card-img-top {
+            width: 100%;
+            height: 200px; /* Fixed image height */
+            object-fit: cover; /* Ensures image doesn't stretch */
+        }
+        .btn-primary {
+            background-color: #343a40;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #495057; /* Darker shade on hover */
+        }
+        /* Styling for BLOGS heading */
+        .blogs-heading {
+            background-color: #343a40; /* Dark background */
+            color: white; /* White text */
+            text-align: center; /* Center the text */
+            padding: 30px 0; /* Padding to give some space */
+            font-size: 36px; /* Large font size */
+            font-weight: bold; /* Bold text */
+            margin-bottom: 40px; /* Space below the heading */
+            text-transform: uppercase; /* Uppercase letters */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+    </style>
 </head>
 <body>
     <%- include("./partials/nav") %>
     <%- include("./partials/alert") %>
-    
-    <% blogs.forEach(blog => { %>
-        <div class="card" style="width: 18rem;">
-            <img src="<%= blog.coverImageUrl %>" class="card-img-top">
-            <div class="card-body">
-                <h5 class="card-title"> <%= blog.title %> </h5>
-                <p class="card-text"> <%= blog.body %> </p>
-                <a href="#" class="btn btn-primary">View</a>
+    <% if (locals.blogs) { %>
+        <!-- Beautiful BLOGS Heading -->
+        <div class="blogs-heading">BLOGS</div>
+        <div class="container mt-5">
+            <div class="row">
+                <% blogs.forEach(blog => { %>
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card">
+                            <img src="<%= blog.coverImageUrl %>" class="card-img-top" alt="<%= blog.title %>">
+                            <div class="card-body">
+                                <h5 class="card-title"> <%= blog.title %> </h5>
+                                <a href="/blog/<%- blog._id %>" class="btn btn-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
             </div>
         </div>
-    <% }) %>
-
+    <% }else{ %>
+        <div class="blogs-heading">NO BLOGS ARE PRESENT</div>
+    <% } %>
     <%- include("./partials/foot") %>
 </body>
 </html>
