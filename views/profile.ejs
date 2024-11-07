@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+    <title>User Profile</title>
+    <style>
+        .profile-container {
+            background-color: #f8f9fa;
+            color: #343a40;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .profile-card {
+            width: 100%;
+            max-width: 450px; /* Further increased card width */
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+            padding-top: 35px; /* Space for the profile image */
+        }
+        .profile-header {
+            background-color: #343a40;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .profile-img {
+            width: 250px; /* Increased profile image size */
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-top: 50px;
+            border: 5px solid #ffffff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-body {
+            padding: 1px 20px 20px; /* Adjusted top padding to fit the profile image */
+        }
+        .profile-info h5 {
+            color: #4b4b4b;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #343a40;
+        }
+        .btn-primary {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <%- include("./partials/nav") %>
+    <%- include("./partials/alert") %>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-header">
+                Profile
+            </div>
+            <img src="<%= user.profileImageUrl%>" class="profile-img" alt="Profile Image">
+            <div class="profile-body">
+                <div class="profile-info">
+                    <h5><strong>Name:</strong> <%= user.fullName %></h5>
+                    <h5><strong>Email:</strong> <%= user.email %></h5>
+                </div>
+                <form action="/user/profile" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="new_userName" class="form-label">New Username</label>
+                        <input type="text" class="form-control" id="new_userName" name="new_userName" placeholder="Enter your new username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Profile Image</label>
+                        <input type="file" class="form-control" id="file" name="file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <%- include("./partials/foot") %>
+</body>
+</html>

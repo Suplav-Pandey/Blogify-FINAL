@@ -49,7 +49,6 @@ async function createComment(req, res) {
 
     if (!content) return res.redirect(`/blog/${req.params.id}`);
     const comment = await COMMENT.create({ content, createdBy, createdOnBlog });
-    console.log(`the comment created is : ${comment}`);
     return res.redirect(`/blog/${req.params.id}`);
   } catch (error) {
     console.log(`some error in rendering blog :${error}`);

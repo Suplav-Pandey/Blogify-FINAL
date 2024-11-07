@@ -13,6 +13,10 @@ function logout(req,res){
     res.clearCookie("token").redirect("/");
 }
 
+function profileGet(req,res){
+    res.render("profile",{user:req.user});
+}
+
 async function loginPost(req,res){
     //do login + insert cookie for authorization
     try{
@@ -47,4 +51,26 @@ async function registerPost(req,res){
     }
 }
 
-module.exports={loginGet,registerGet,loginPost,registerPost,logout};
+async function profilePost(req, res) {
+    try {
+      const { new_userName } = req.body;
+      const userId = req.user._id;
+      const user = await USER.findOne({ _id: userId });
+
+      if (req.file && req.file.filename) {
+        user.profileImageUrl = `/uploads/${req.file.filename}`;
+      }
+      if (new_userName && user.fullName !== new_userName) {
+        user.fullName = new_userName;
+      }
+      await user.save();
+      const token= jwtSign(user);//token is created.
+      res.cookie("token",token,{maxAge: 30*24*60*60*1000}).status(201).render("home", { message: `User ${user.fullName} updated successfully`, user });
+    } catch (error) {
+      console.error(`Error while updating the user: ${error}`);
+      res.status(500).render("profile", { error: "Some internal server error" });
+    }
+}
+
+
+module.exports={loginGet,registerGet,loginPost,registerPost,logout,profileGet,profilePost};
